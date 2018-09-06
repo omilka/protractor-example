@@ -1,8 +1,3 @@
-// solves `SyntaxError: Unexpected token import`
-require("babel-register")({
-    presets: [ 'es2015' ]
-});
-
 exports.config = {
     /**
      *  Uncomment ONE of the following to connect to: seleniumServerJar OR directConnect. Protractor
@@ -12,17 +7,28 @@ exports.config = {
     //seleniumServerJar: "node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-3.4.0.jar",
     directConnect: true,
 
-    specs: ['specs/*Spec.js'],
-    baseUrl: 'http://qualityshepherd.com',
+    specs: ['specs/homePageSpec.js'],
+    baseUrl: 'http://localhost:4200/',
     framework: 'jasmine',
 
     onPrepare: () => {
-        // set browser size...
-        browser.manage().window().setSize(1024, 800);
+        browser.manage().window().maximize();
 
-        // better jasmine 2 reports...
+
         const SpecReporter = require('jasmine-spec-reporter');
-        jasmine.getEnv().addReporter(new SpecReporter({displayStacktrace: 'specs'}));
+        var Jasmine2HtmlReporter = require('protractor-jasmine2-html-reporter');
+        
+        jasmine.getEnv().addReporter(new SpecReporter({
+            displayStacktrace: 'specs',
+            }));
+
+
+        jasmine.getEnv().addReporter(
+            new Jasmine2HtmlReporter({
+            savePath: 'target/screenshots'
+            })
+        );
+
     },
 
     capabilities: {
@@ -38,7 +44,7 @@ exports.config = {
                 'log-path=/tmp/chromedriver.log'
             ],
             prefs: {
-                // disable chrome's annoying password manager
+                // disable chrome's  password manager
                 'profile.password_manager_enabled': false,
                 'credentials_enable_service': false,
                 'password_manager_enabled': false
@@ -49,8 +55,11 @@ exports.config = {
     jasmineNodeOpts: {
         showColors: true,
         displaySpecDuration: true,
-        // overrides jasmine's print method to report dot syntax for custom reports
-        print: () => {},
+       print: () => {},
         defaultTimeoutInterval: 50000
     }
 };
+
+require("babel-register")({
+    presets: [ 'es2015' ]
+});
