@@ -7,7 +7,7 @@ exports.config = {
     //seleniumServerJar: "node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-3.4.0.jar",
     directConnect: true,
 
-    specs: ['specs/homePageSpec.js'],
+    specs: ['specs/*PageSpec.js'],
     baseUrl: 'http://localhost:4200/',
     framework: 'jasmine',
 
@@ -16,25 +16,26 @@ exports.config = {
 
 
         const SpecReporter = require('jasmine-spec-reporter');
-        var Jasmine2HtmlReporter = require('protractor-jasmine2-html-reporter');
-        
         jasmine.getEnv().addReporter(new SpecReporter({
             displayStacktrace: 'specs',
             }));
 
+        var jasmineReporters = require('jasmine-reporters');
+        jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
+            consolidateAll: true,
+            savePath: './reports',
+            filePrefix: 'xmloutput'
+        }));
 
-        jasmine.getEnv().addReporter(
-            new Jasmine2HtmlReporter({
-            savePath: 'target/screenshots'
-            })
-        );
+       
 
     },
 
     capabilities: {
+
         browserName: 'chrome',
-        shardTestFiles: true,
-        maxInstances: 2,
+       // shardTestFiles: true,
+       // maxInstances: 2,
         chromeOptions: {
             args: [
                 // disable chrome's wakiness
