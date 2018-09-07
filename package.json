@@ -7,8 +7,8 @@
   },
   "scripts": {
     "prepare": "node_modules/.bin/webdriver-manager update",
-    "update": "node_modules/.bin/webdriver-manager update",
-    "test": "./flake conf.js"
+    "update": "node_modules/.bin/webdriver-manager update"
+    
   },
   "repository": {
     "type": "git",
